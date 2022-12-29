@@ -3,6 +3,8 @@ import DogImage from './components/DogImage';
 
 function App() {
   const [imageUrl, setImageUrl] = useState('');
+  const [intervalId, setIntervalId] = useState(null);
+
 
   async function fetchImage() {
     const response = await fetch('https://dog.ceo/api/breeds/image/random');
@@ -17,11 +19,23 @@ function App() {
     fetchImage();
   };
 
+  function startTimer() {
+    const id = setInterval(fetchImage, 3000);
+    setIntervalId(id);
+  }
+
+  function stopTimer() {
+    clearInterval(intervalId);
+    setIntervalId(null);
+  }
+
 
 
   return (
     <div>
       <DogImage imageUrl={imageUrl} onRefresh={handleRefresh} />
+      <button onClick={startTimer}>Start Timer</button>
+      <button onClick={stopTimer}>Stop Timer</button>
     </div>
   );
 }
